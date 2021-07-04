@@ -61,6 +61,7 @@ class _log_call:
         indent_arr.append(indent)
         indent_str = "".join(indent_arr)
 
+        logger_func("")
         self._log_start(indent_str, func, args, kwargs)
 
         start_time = time.perf_counter()
@@ -73,6 +74,8 @@ class _log_call:
         self._log_return(indent_str, func, result)
         if log_time:
             self._log_time(indent_str, func, run_time)
+        logger_func("")
+
         indent_arr.pop()
         return result
 

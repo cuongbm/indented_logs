@@ -11,9 +11,9 @@ setuptools.setup(
     description="Decorators to indent-log function calls with parameter and timing",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/cuongbui/indendted_logs",
+    url="https://github.com/cuongbm/indented_logs",
     project_urls={
-        "Bug Tracker": "https://github.com/cuongbui/indendted_logs/issues",
+        "Bug Tracker": "https://github.com/cuongbm/indented_logs/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",

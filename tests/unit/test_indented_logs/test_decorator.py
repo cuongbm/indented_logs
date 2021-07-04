@@ -69,3 +69,24 @@ def test_get_all_args_str():
         ["a", "bbbbbb", "cccc"], {"d": 1, "e": 2}, param_max_length=2
     )
     assert result == "a, bb, cc, d=1, e=2"
+
+
+def test_ouput():
+    @log_call()
+    def get_data():
+        get_parameters()
+        query_db(conn="sample_conn_str")
+
+    @log_call()
+    def get_parameters():
+        pass
+
+    @log_call()
+    def query_db(conn):
+        return covert_data("1", "2")
+
+    @log_call()
+    def covert_data(a, b):
+        return (int(a), int(b))
+
+    get_data()
