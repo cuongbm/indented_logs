@@ -2,12 +2,13 @@
 from unittest.mock import patch, MagicMock
 
 # application import
-from indented_logs import log_call, log_call_cls, get_all_args_str
+from indented_logs import log_call, log_call_cls
+from indented_logs.decorators import get_all_args_str
 
 
-@patch("indented_logs._log_call._log_time")
-@patch("indented_logs._log_call._log_return")
-@patch("indented_logs._log_call._log_start")
+@patch("indented_logs.decorators._log_call._log_time")
+@patch("indented_logs.decorators._log_call._log_return")
+@patch("indented_logs.decorators._log_call._log_start")
 def test_decorate_method(
     mock_log_start: MagicMock, mock_log_return: MagicMock, mock_log_time: MagicMock
 ):
