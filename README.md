@@ -2,7 +2,7 @@ Decorators to log function calls with parameter and timing
 
 # Usage
 
-Decorators to track down function call with indent.
+Decorators to track down function call with indent. This tool is very handly for debugging, since the out is much cleaner than using python `Stack Frames`.
 Both logging function and indent characters are configurable
 
 **Decorate a function**:
