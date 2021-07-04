@@ -1,0 +1,11 @@
+name: indented_logs_development
+channels:
+  - defaults
+dependencies:
+  - pip
+  - pytest
+  - black
+  - rope
+  - twine
+  - pytest-cov
+prefix: C:\tools\miniconda3\envs\indented_logs_development
