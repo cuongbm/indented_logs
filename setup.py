@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="indented-logs",
-    version="1.0.0",
+    version="1.0.1",
     author="Cuong Bui",
     author_email="buiminhcuong@hotmail.com",
     description="Decorators to indent-log function calls with parameter and timing",
