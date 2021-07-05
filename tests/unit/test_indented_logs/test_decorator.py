@@ -43,25 +43,6 @@ def test_customize_indent_and_logger():
     assert len(result) > 0
 
 
-def test_decorate_cls():
-    captured = []
-
-    def log_with_capture(msg):
-        print(msg)
-        captured.append(msg)
-
-    @log_call_cls(indent="***", log_time=False, logger_func=log_with_capture)
-    class MyClass:
-        def method1(self, arg1, arg2):
-            self.method2(arg1)
-
-        def method2(self, arg1):
-            pass
-
-    obj = MyClass()
-    obj.method1("aaaaa", "bbbbbbb")
-
-
 def test_get_all_args_str():
     result = get_all_args_str(["a", "b", "c"], {"d": 1, "e": 2}, param_max_length=0)
     assert result == "a, b, c, d=1, e=2"
@@ -90,3 +71,48 @@ def test_ouput():
         return (int(a), int(b))
 
     get_data()
+
+
+def test_preserve_doc_and_properties():
+    @log_call()
+    def method1(arg1, arg2):
+        """Sample doc"""
+        pass
+
+    # method1["custom"] = "value1"
+
+    # print(method1["custom"])
+    assert method1.__doc__ == "Sample doc"
+
+
+def test_decorate_cls():
+    captured = []
+
+    def log_with_capture(msg):
+        print(msg)
+        captured.append(msg)
+
+    @log_call_cls(indent="***", log_time=False, logger_func=log_with_capture)
+    class MyClass:
+        """MyClass doc"""
+
+        def __init__(self, arg1, arg2):
+            self.arg1 = arg1
+            self.arg2 = arg2
+
+        def method1(self, arg1, arg2):
+            self.method2(arg1)
+
+        def method2(self, arg1):
+            pass
+
+        @classmethod
+        def class_method1(cls):
+            print(cls)
+            return "return of class_method1"
+
+    obj = MyClass(5, arg2=10)
+    obj.method1("aaaaa", "bbbbbbb")
+    result = MyClass.class_method1()
+    assert result == "return of class_method1"
+    assert MyClass.__doc__ == "MyClass doc"

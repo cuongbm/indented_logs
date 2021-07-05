@@ -1,4 +1,5 @@
 import time
+import functools
 
 indent_arr = []
 
@@ -29,12 +30,20 @@ def log_call(logger_func=print, indent="...", param_max_length=1000, log_time=Tr
     """
 
     def inner(func):
-        return _log_call(
-            func=func,
-            logger_func=logger_func,
-            indent=indent,
-            param_max_length=param_max_length,
-        )
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            return _log_call(
+                func=func,
+                logger_func=logger_func,
+                indent=indent,
+                param_max_length=param_max_length,
+            )(*args, **kwargs)
+
+        # end wrapper
+
+        return wrapper
+
+    # end Inner
 
     return inner
 
@@ -55,7 +64,6 @@ class _log_call:
         logger_func = self.logger_func
         func = self.func
         indent = self.indent
-        param_max_length = self.param_max_length
         log_time = self.log_time
 
         indent_arr.append(indent)
@@ -99,39 +107,36 @@ def repr_with_length(arg, length):
 
 def log_call_cls(logger_func=print, indent="...", param_max_length=50, log_time=True):
     def inner(cls):
-        return _log_call_cls(
-            cls=cls,
-            logger_func=logger_func,
-            indent=indent,
-            param_max_length=param_max_length,
-            log_time=log_time,
-        )
+
+        original_init = cls.__init__
+
+        def new_init(self, *arg, **kwargs):
+            print("new init")
+            original_init(self, *arg, **kwargs)
+            for func_name in dir(self):
+                func = getattr(self, func_name)
+                if (
+                    not func_name.startswith("__")
+                    and callable(func)
+                    and hasattr(func, "__self__")
+                    and func.__self__ != cls
+                ):
+                    print(func_name)
+                    wrapper_func = log_call(
+                        logger_func=logger_func,
+                        indent=indent,
+                        param_max_length=param_max_length,
+                        log_time=log_time,
+                    )
+                    setattr(self, func_name, wrapper_func(func))
+
+        cls.__init__ = new_init
+
+        return cls
+
+    # end inner
 
     return inner
 
 
-class _log_call_cls:
-    """Decorator that decorate log_call to class methods"""
-
-    def __init__(
-        self, cls, logger_func=print, indent="...", param_max_length=50, log_time=True
-    ):
-        self.cls = cls
-        self.logger_func = logger_func
-        self.indent = indent
-        self.param_max_length = param_max_length
-        self.log_time = log_time
-
-    def __call__(self, *args, **kwargs):
-        obj = self.cls(*args, **kwargs)
-        for func_name in dir(obj):
-            func = getattr(obj, func_name)
-            if not func_name.startswith("__") and callable(func):
-                wrapper_func = log_call(
-                    logger_func=self.logger_func,
-                    indent=self.indent,
-                    param_max_length=self.param_max_length,
-                    log_time=self.log_time,
-                )
-                setattr(obj, func_name, wrapper_func(func))
-        return obj
+# end log_call_cls
