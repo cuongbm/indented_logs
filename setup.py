@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/cuongbm/indented_logs",
-    project_urls={"Bug Tracker": "https://github.com/cuongbm/indented_logs/issues",},
+    project_urls={"Bug Tracker": "https://github.com/cuongbm/indented_logs/issues"},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

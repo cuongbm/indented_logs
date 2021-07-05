@@ -21,7 +21,6 @@ def test_decorate_method(
     def method2():
         pass
 
-    result = method1(3, 4)
     assert mock_log_start.call_count == 2
     assert mock_log_return.call_count == 2
     assert mock_log_time.call_count == 2

@@ -97,7 +97,8 @@ class _log_call:
 
     def _log_start(self, indent_str, func, args, kwargs):
         self.logger_func(
-            f"{indent_str}CALL: {func.__name__}({get_all_args_str(args, kwargs, self.param_max_length)})"
+            f"{indent_str}CALL: {func.__name__}"
+            f"({get_all_args_str(args, kwargs, self.param_max_length)})"
         )
 
 
